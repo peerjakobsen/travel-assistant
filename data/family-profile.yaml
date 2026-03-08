@@ -29,7 +29,7 @@ family:
       date_of_birth: null
       nationality: Danish
       age_at_travel: null  # calculated dynamically
-      seat_preference: null
+      seat_preference: window
       dietary: none
       notes: null
 
@@ -39,7 +39,7 @@ family:
       date_of_birth: null
       nationality: Danish
       age_at_travel: null  # calculated dynamically
-      seat_preference: null
+      seat_preference: window
       dietary: none
       notes: null
 
@@ -49,7 +49,7 @@ family:
       date_of_birth: null
       nationality: Danish
       age_at_travel: null  # calculated dynamically
-      seat_preference: null
+      seat_preference: window
       dietary: none
       notes: null
 
@@ -59,7 +59,7 @@ family:
       date_of_birth: null
       nationality: Danish
       age_at_travel: null  # calculated dynamically
-      seat_preference: null
+      seat_preference: window
       dietary: none
       notes: null
 

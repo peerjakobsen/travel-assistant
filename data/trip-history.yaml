@@ -1,4 +1,4 @@
-# Trip history — populated automatically after each trip
+# Trip history — tracks trips from planning through completion
 #
 # Schema for each trip entry:
 #   - id: trip_001

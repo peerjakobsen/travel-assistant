@@ -27,6 +27,10 @@ school_years:
         start: 2026-05-14
         end: 2026-05-15
 
+      - name: Whitsun (pinse)
+        start: 2026-05-23
+        end: 2026-05-25
+
       - name: Summer (sommerferie)
         start: 2026-06-29
         end: 2026-08-10
