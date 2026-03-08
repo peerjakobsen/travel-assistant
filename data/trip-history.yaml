@@ -6,6 +6,7 @@
 #     dates:
 #       departure: 2026-07-01
 #       return: 2026-07-10
+#     status: confirmed  # planning | confirmed | completed | cancelled
 #     members: [peer, spouse, child1, child2, child3, child4]
 #     flights:
 #       outbound: 'SAS SK1573 CPH-PMI'

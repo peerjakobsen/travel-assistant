@@ -1,0 +1,134 @@
+# Scheduled tasks for Cowork's /schedule feature
+#
+# These task definitions are reference material for setting up
+# recurring schedules in Cowork. Each task includes the exact
+# prompt Cowork should execute on the specified schedule.
+
+tasks:
+  - name: monthly_passport_expiry_check
+    description: >
+      Check all family passports and flag any expiring within 12 months.
+      Ensures the family is never caught off guard by an expired passport.
+    schedule: 'First Monday of each month'
+    chrome_required: false
+    data_files_read:
+      - data/document-vault.yaml
+      - data/family-profile.yaml
+    data_files_written: []
+    prompt: |
+      Read data/document-vault.yaml and data/family-profile.yaml.
+
+      For each family member, check their passport expiry_date:
+      - If expiry_date is within 12 months from today, flag as EXPIRING SOON
+        with the exact date and months remaining.
+      - If expiry_date is null or missing, flag as MISSING — passport expiry
+        date not on record.
+      - If expiry_date is already past, flag as EXPIRED.
+      - Otherwise, mark as VALID with the expiry date.
+
+      For any passport that needs renewal, note:
+      - Danish passports: allow 4-6 weeks for processing.
+      - Children's passports are valid for 5 years, adults for 10 years.
+      - Renewing a passport invalidates any linked ESTA — flag this if
+        the member has an active ESTA on record.
+
+      Present results as a summary table with one row per family member
+      showing: name, passport status, expiry date, and any action required.
+    output_format: |
+      Passport Status — [Month Year]
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      [Name]    [✅ Valid / ⚠️ Expiring / ❌ Expired / ❓ Missing]  [expiry date]
+      ...
+
+      Action items:
+      1. [specific actions with timelines]
+
+  - name: pre_trip_document_reminder
+    description: >
+      Weekly check for confirmed trips departing within 30-45 days.
+      Runs the document-checker logic to verify passports, ESTAs,
+      ETAs, and visas are all in order before travel.
+    schedule: 'Every Monday'
+    chrome_required: false  # unless visa requirements need verification for unusual destinations
+    data_files_read:
+      - data/trip-history.yaml
+      - data/document-vault.yaml
+      - data/family-profile.yaml
+    data_files_written: []
+    prompt: |
+      Read data/trip-history.yaml. Find any trips with status: confirmed
+      where dates.departure is within 30-45 days from today.
+
+      If no matching trips found, respond: "No upcoming confirmed trips
+      in the next 30-45 days. No action needed."
+
+      For each matching trip:
+      1. Identify the destination and travel dates.
+      2. Read data/document-vault.yaml and data/family-profile.yaml.
+      3. For each travelling family member:
+         - Check passport validity against destination requirements:
+           - Schengen: 3 months beyond travel dates
+           - USA, Canada, Australia: 6 months beyond travel dates
+           - UK: valid for duration of stay
+         - Check travel authorization status (ESTA, ETA, eTA, visa)
+           against what the destination requires for Danish citizens.
+         - Flag any missing, expired, or soon-to-expire documents.
+      4. Present a per-trip document readiness report with specific
+         action items and timelines.
+
+      If the destination is unusual and visa requirements are uncertain,
+      note that Chrome-based verification may be needed and flag for
+      manual review.
+    output_format: |
+      Pre-Trip Document Check — [Destination], departing [date]
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      [Name]    [passport status]    [authorization status]
+      ...
+
+      Action items:
+      1. [specific actions with deadlines relative to departure]
+
+  - name: school_calendar_update
+    description: >
+      Annual update of Danish school holidays for the next school year.
+      Browses official sources to get the latest calendar and updates
+      the local data file.
+    schedule: 'August 1st each year'
+    chrome_required: true
+    data_files_read:
+      - data/school-calendar.yaml
+    data_files_written:
+      - data/school-calendar.yaml
+    prompt: |
+      Browse uvm.dk (Danish Ministry of Education) at
+      https://www.uvm.dk/folkeskolen/skoleaaret/ferier-og-fridage
+      or publicholidays.dk for the next school year's official calendar.
+
+      Extract all holiday periods:
+      - Autumn break (efterårsferie)
+      - Christmas break (juleferie)
+      - Winter break (vinterferie)
+      - Easter break (påskeferie)
+      - Ascension (Kristi himmelfartsdag + bridge day)
+      - Whitsun (pinse)
+      - Summer holiday (sommerferie)
+      - Any additional official holidays or bridge days
+
+      For each holiday period, capture:
+      - name (in English and Danish)
+      - start_date (YYYY-MM-DD)
+      - end_date (YYYY-MM-DD)
+
+      Read data/school-calendar.yaml and add a new school year entry
+      following the existing schema structure. Do not modify or remove
+      existing years — only add the new year.
+
+      Present a confirmation listing all holidays added with their dates.
+    output_format: |
+      School Calendar Updated — [Year]-[Year] School Year
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      Added [N] holiday periods:
+      - [Holiday name]: [start] → [end]
+      ...
+
+      data/school-calendar.yaml has been updated.
