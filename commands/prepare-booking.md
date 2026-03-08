@@ -33,3 +33,9 @@ Total: [price]
    Review the booking, then enter your card details to complete.
    URL: [current page URL]
 ```
+
+## Browser Session Notes
+
+- **Login state is shared:** The Chrome connector uses the user's existing Chrome session. If you're already logged into SAS.dk, Airbnb, or other booking sites, Claude will use that session — loyalty pricing and saved details apply automatically.
+- **CAPTCHAs:** If a CAPTCHA appears during the booking flow, execution pauses. Solve it manually in Chrome, then Claude continues.
+- **Payment enforcement:** The Chrome extension's built-in prohibited actions prevent submitting payment forms. This is a platform-level safety boundary, not just a plugin instruction.

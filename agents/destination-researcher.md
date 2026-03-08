@@ -10,8 +10,10 @@ Type: sub-agent (spawned by commands)
 Research and compare travel destinations suitable for a family of 6, given a rough brief describing preferences, dates, and budget.
 
 ## Tools available
-- Browser (Claude browser capability)
+- Browser via Chrome connector (opens visibly in the user's Chrome — the user can watch searches happen in real time)
 - File read: `data/family-profile.yaml`
+
+> **Note:** This agent does not have native browser access. All web browsing is handed off to the Claude in Chrome extension connector. Chrome must be open and the connector enabled in Settings → Chrome Connector.
 
 ## Behaviour rules
 > **Stub — implemented in Milestone 4**

@@ -11,6 +11,7 @@ Given a destination and travel dates, verify all family members' travel document
 
 ## Tools available
 - File read: `data/document-vault.yaml`, `data/family-profile.yaml`
+- Browser via Chrome connector (if needed to verify visa requirements on embassy websites — opens visibly in the user's Chrome)
 
 ## Behaviour rules
 > **Stub — implemented in Milestone 3**

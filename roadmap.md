@@ -5,9 +5,27 @@
 
 ## What We're Building
 
-A personal travel concierge plugin for Claude Cowork that acts like a wealthy family's dedicated travel assistant. It knows your family intimately — passports, preferences, loyalty programs, past trips, seat preferences, school holidays — and uses Claude's browser capabilities to research, compare, and prepare everything for booking. You validate and pay. The plugin handles everything else.
+A personal travel concierge plugin for Claude Cowork that acts like a wealthy family's dedicated travel assistant. It knows your family intimately — passports, preferences, loyalty programs, past trips, seat preferences, school holidays — and uses the Chrome connector to research, compare, and prepare everything for booking. You validate and pay. The plugin handles everything else.
 
 **Core philosophy:** The plugin should feel like a trusted assistant that never needs to be briefed. You say "10 days somewhere warm in February, ~€8k" and it comes back with curated options, ready to book.
+
+---
+
+## Prerequisites
+
+This plugin requires two components working together:
+
+1. **Claude Desktop app (Cowork)** — the main application where conversations and plugin logic run
+2. **Claude in Chrome extension** — provides browser access for research, form-filling, and booking preparation
+
+### Setup
+
+1. Install the Claude Desktop app and sign in
+2. Install the "Claude in Chrome" extension from the Chrome Web Store
+3. In the Claude Desktop app, go to **Settings → Chrome Connector → toggle on**
+4. Confirm the connection — the Chrome extension status should show "Connected"
+
+> **Important:** The Chrome connector may disconnect after app restarts. If browser tasks fail, check Settings → Chrome Connector and re-enable the toggle.
 
 ---
 
@@ -44,10 +62,10 @@ family-travel-assistant/
 │   ├── prepare-booking.md   # /travel:prepare-booking — navigate to booking page, pre-fill form
 │   ├── trip-brief.md        # /travel:trip-brief — generate pre-departure document
 │   └── update-profile.md    # /travel:update-profile — update family profile data
-├── agents/                  # Sub-agents for parallel/complex research tasks
-│   ├── flight-scout.md      # Browses Google Flights, Momondo, SAS for a family of 6
-│   ├── accommodation-scout.md  # Browses Airbnb, Booking.com with family filters
-│   ├── destination-researcher.md  # Browses travel blogs, TripAdvisor, local guides
+├── agents/                  # Sub-agents that orchestrate the Chrome connector for research
+│   ├── flight-scout.md      # Triggers Chrome connector to search Google Flights, Momondo, SAS
+│   ├── accommodation-scout.md  # Triggers Chrome connector to search Airbnb, Booking.com
+│   ├── destination-researcher.md  # Triggers Chrome connector to browse travel blogs, TripAdvisor
 │   └── document-checker.md  # Checks passport expiry, ESTA/ETA validity, visa requirements
 ├── data/
 │   ├── family-profile.yaml  # Persistent family data: members, preferences, loyalty programs
@@ -61,7 +79,7 @@ family-travel-assistant/
 
 - **Skills** (`skills/`) are automatically invoked by Claude when contextually relevant. No user action needed. Use them for domain knowledge, heuristics, and decision frameworks.
 - **Commands** (`commands/`) are explicit slash commands (`/travel:plan-trip`). Use them for structured workflows with clear inputs.
-- **Agents** (`agents/`) are sub-agents Claude can spawn to parallelize research. Great for "search flights AND accommodation simultaneously."
+- **Agents** (`agents/`) are sub-agents Claude can spawn to parallelize research. Agents that browse the web orchestrate the Chrome connector — Cowork itself has no native browser access. Chrome opens visibly so the user sees what's happening in real time.
 - **`plugin.json`** is the manifest. It must reference all entrypoints.
 - **`CLAUDE.md`** at the root gives Claude immediate orientation when the plugin loads.
 - **`data/`** contains persistent YAML files that store the family profile. These are read at the start of every session and updated when the user runs `/travel:update-profile`.
@@ -329,7 +347,7 @@ Action items:
 
 ### `agents/destination-researcher.md`
 
-This agent uses Claude's browser capability. It should:
+This agent uses the Chrome connector to browse the web (opens visibly in the user's Chrome). It should:
 
 1. Search Google for "best family destinations [month] [region/vibe]"
 2. Browse 2-3 travel sites (e.g., Lonely Planet, Condé Nast Traveler family travel sections, TripAdvisor family guides)
@@ -371,7 +389,7 @@ Should invoke the destination-researcher agent and present 2-3 options cleanly.
 
 ### `agents/flight-scout.md`
 
-Browser agent that searches for flights. Instructions:
+Agent that orchestrates the Chrome connector to search for flights. Instructions:
 - Search Google Flights first for an overview: CPH → [destination], dates, 6 passengers
 - Then check SAS (sas.dk) specifically for EuroBonus earning potential
 - Also check momondo.dk for price comparison
@@ -383,7 +401,7 @@ Browser agent that searches for flights. Instructions:
 
 ### `agents/accommodation-scout.md`
 
-Browser agent that searches Airbnb and Booking.com:
+Agent that orchestrates the Chrome connector to search Airbnb and Booking.com:
 - Airbnb: search with filters: 4+ bedrooms, dates, 6 guests, target area
 - Sort by: rating first, then price
 - Filter out: apartments (want houses/villas), shared spaces
@@ -525,6 +543,8 @@ Using Cowork's `/schedule` feature, set up:
 
 Scheduled tasks in Cowork are defined with `/schedule` in a Cowork task. Store the task definitions in `data/scheduled-tasks.yaml` as reference so Claude Code can scaffold them.
 
+> **Technical constraint:** Scheduled tasks that involve browsing (e.g., school calendar update from uvm.dk) only run while Chrome is open and the computer is awake. The Chrome connector must be active for browser-based scheduled tasks to execute.
+
 ---
 
 ## Milestone 9: Polish & Real-World Testing
@@ -543,9 +563,9 @@ Scheduled tasks in Cowork are defined with `/schedule` in a Cowork task. Store t
 
 ### Known limitations to document
 
-- Payment always requires manual user action — this is intentional and by design
-- Booking sites may require login — the plugin cannot handle passwords; user must log in first
-- CAPTCHA and bot detection on some sites will require manual user action
+- Payment always requires manual user action — enforced both by plugin instructions and by the Chrome extension's built-in prohibited actions
+- Login state is shared from the user's existing Chrome session — if already logged into SAS.dk, Airbnb, etc., Claude uses that session automatically (loyalty numbers apply). The plugin cannot handle initial login; user must log in first.
+- CAPTCHA and bot detection on some sites will pause execution and require manual user action in Chrome
 - Flight prices and availability change in real time — always re-verify before booking
 - Airbnb availability windows can be short — act quickly on good finds
 
@@ -613,7 +633,7 @@ Type: sub-agent (spawned by commands)
 Browse live flight search engines and return structured flight options.
 
 ## Tools available
-- Browser (Claude Chrome plugin)
+- Browser via Chrome connector (Claude in Chrome extension — opens visibly in user's Chrome)
 - File read: data/family-profile.yaml, data/document-vault.yaml
 
 ## Behaviour rules
@@ -629,6 +649,29 @@ Browse live flight search engines and return structured flight options.
 - Use `null` for fields not yet filled in (don't use empty strings)
 - Dates always in ISO format: YYYY-MM-DD
 - Currency amounts always include unit: `8000 EUR`
+
+---
+
+## Technical Constraints & Known Limitations
+
+### Browser Access
+
+- Cowork has **no native browser access**. All browsing is performed via the Claude in Chrome extension connector. Agents that search flights, accommodation, or destinations are orchestrating Chrome, not calling an abstract browser function.
+- Chrome opens visibly on screen during browser tasks — the user can watch searches and form-filling happen in real time.
+- The Chrome connector shares the user's existing Chrome session, including cookies and login state. If the user is logged into a booking site, Claude inherits that session (loyalty pricing, saved details, etc.).
+
+### Chrome Extension Requirements
+
+- **Google Chrome only** — the Claude in Chrome extension is not supported on Brave, Arc, or other Chromium-based browsers.
+- The Chrome connector must be enabled in **Settings → Chrome Connector** in the Claude Desktop app.
+- The connector may disconnect after app restarts — re-enable the toggle if browser tasks stop working.
+- Chrome must be open and the computer must be awake for any browser-based task (research, booking, scheduled tasks) to execute.
+
+### Usage & Performance
+
+- Browser automation consumes more of the Claude usage quota than regular chat interactions. Complex multi-site searches (e.g., comparing flights across Google Flights, SAS, and Momondo) use significantly more quota than text-only planning.
+- CAPTCHAs pause agent execution and require manual user intervention in Chrome.
+- Payment form submission is blocked at the platform level by the Chrome extension's built-in prohibited actions — this is a safety boundary independent of plugin instructions.
 
 ---
 
