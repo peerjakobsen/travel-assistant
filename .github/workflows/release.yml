@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'CLAUDE.md'
+      - 'TESTING.md'
+      - 'roadmap.md'
+      - '.gitignore'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version from plugin.json
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create release zip
+        run: |
+          zip -r family-travel-assistant.zip \
+            .claude-plugin/ \
+            commands/ \
+            skills/ \
+            agents/ \
+            data/
+
+      - name: Delete existing release for this tag
+        run: gh release delete "${{ steps.version.outputs.tag }}" --yes 2>/dev/null || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find previous tag
+        id: prev
+        run: |
+          PREV=$(git tag --sort=-v:refname | grep -v "${{ steps.version.outputs.tag }}" | head -n1)
+          echo "tag=${PREV:-}" >> "$GITHUB_OUTPUT"
+
+      - name: Build release notes
+        id: notes
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREV="${{ steps.prev.outputs.tag }}"
+          REPO="${{ github.repository }}"
+
+          NOTES="## Install
+
+          ### Via Cowork Marketplace
+          \`\`\`
+          /marketplace install family-travel-assistant
+          \`\`\`
+
+          ### Manual Install
+          1. Download \`family-travel-assistant.zip\` from this release
+          2. Extract into your Claude Code plugins directory
+          3. Restart Claude Code"
+
+          if [ -n "$PREV" ]; then
+            NOTES="$NOTES
+
+          ---
+
+          **Changelog:** [$PREV → $TAG](https://github.com/$REPO/compare/$PREV...$TAG)"
+          fi
+
+          # Write to file to preserve newlines
+          echo "$NOTES" > release-notes.md
+
+      - name: Create GitHub release
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" \
+            family-travel-assistant.zip \
+            --title "Family Travel Assistant ${{ steps.version.outputs.tag }}" \
+            --notes-file release-notes.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

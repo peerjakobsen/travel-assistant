@@ -1,0 +1,35 @@
+{
+  "name": "family-travel-assistant",
+  "owner": {
+    "name": "Peer Jakobsen",
+    "email": "pj@mentilead.com"
+  },
+  "metadata": {
+    "description": "Personal travel concierge for families — plans trips, researches flights and accommodation, checks travel documents, and prepares bookings."
+  },
+  "plugins": [
+    {
+      "name": "family-travel-assistant",
+      "source": {
+        "source": "github",
+        "repo": "peerjakobsen/travel-assistant"
+      },
+      "description": "Personal travel concierge pre-loaded with family preferences and passport data.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Peer Jakobsen"
+      },
+      "repository": "https://github.com/peerjakobsen/travel-assistant",
+      "license": "MIT",
+      "keywords": [
+        "travel",
+        "family-travel",
+        "flights",
+        "accommodation",
+        "booking",
+        "itinerary",
+        "passports"
+      ]
+    }
+  ]
+}
