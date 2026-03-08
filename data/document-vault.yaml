@@ -1,0 +1,109 @@
+documents:
+  - member_id: peer
+    document_type: passport
+    document_number: null
+    nationality: Danish
+    issue_date: null
+    expiry_date: null
+    issuing_country: Denmark
+    notes: null
+
+  - member_id: spouse
+    document_type: passport
+    document_number: null
+    nationality: Danish
+    issue_date: null
+    expiry_date: null
+    issuing_country: Denmark
+    notes: null
+
+  - member_id: child1
+    document_type: passport
+    document_number: null
+    nationality: Danish
+    issue_date: null
+    expiry_date: null
+    issuing_country: Denmark
+    notes: null
+
+  - member_id: child2
+    document_type: passport
+    document_number: null
+    nationality: Danish
+    issue_date: null
+    expiry_date: null
+    issuing_country: Denmark
+    notes: null
+
+  - member_id: child3
+    document_type: passport
+    document_number: null
+    nationality: Danish
+    issue_date: null
+    expiry_date: null
+    issuing_country: Denmark
+    notes: null
+
+  - member_id: child4
+    document_type: passport
+    document_number: null
+    nationality: Danish
+    issue_date: null
+    expiry_date: null
+    issuing_country: Denmark
+    notes: null
+
+travel_authorizations:
+  - member_id: peer
+    type: ESTA
+    destination: USA
+    obtained: false
+    application_date: null
+    expiry_date: null
+    linked_passport: peer
+    notes: 'Valid 2 years from approval. Tied to specific passport.'
+
+  - member_id: spouse
+    type: ESTA
+    destination: USA
+    obtained: false
+    application_date: null
+    expiry_date: null
+    linked_passport: spouse
+    notes: 'Valid 2 years from approval. Tied to specific passport.'
+
+  - member_id: child1
+    type: ESTA
+    destination: USA
+    obtained: false
+    application_date: null
+    expiry_date: null
+    linked_passport: child1
+    notes: 'Valid 2 years from approval. Tied to specific passport.'
+
+  - member_id: child2
+    type: ESTA
+    destination: USA
+    obtained: false
+    application_date: null
+    expiry_date: null
+    linked_passport: child2
+    notes: 'Valid 2 years from approval. Tied to specific passport.'
+
+  - member_id: child3
+    type: ESTA
+    destination: USA
+    obtained: false
+    application_date: null
+    expiry_date: null
+    linked_passport: child3
+    notes: 'Valid 2 years from approval. Tied to specific passport.'
+
+  - member_id: child4
+    type: ESTA
+    destination: USA
+    obtained: false
+    application_date: null
+    expiry_date: null
+    linked_passport: child4
+    notes: 'Valid 2 years from approval. Tied to specific passport.'

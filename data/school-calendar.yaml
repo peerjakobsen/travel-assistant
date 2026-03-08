@@ -1,0 +1,64 @@
+# Danish school holidays (Copenhagen municipality)
+# Source: publicholidays.dk — dates may vary slightly by municipality
+# Update annually when new school year calendars are published
+
+school_years:
+  - year: '2025-2026'
+    holidays:
+      - name: Autumn break (efterårsferie)
+        week: 42
+        start: 2025-10-13
+        end: 2025-10-17
+
+      - name: Christmas (juleferie)
+        start: 2025-12-24
+        end: 2026-01-02
+
+      - name: Winter break (vinterferie)
+        week: 7
+        start: 2026-02-09
+        end: 2026-02-13
+
+      - name: Easter (påskeferie)
+        start: 2026-03-30
+        end: 2026-04-06
+
+      - name: Ascension (Kristi himmelfartsdag)
+        start: 2026-05-14
+        end: 2026-05-15
+
+      - name: Summer (sommerferie)
+        start: 2026-06-29
+        end: 2026-08-10
+
+  - year: '2026-2027'
+    holidays:
+      - name: Autumn break (efterårsferie)
+        week: 42
+        start: 2026-10-12
+        end: 2026-10-16
+
+      - name: Christmas (juleferie)
+        start: 2026-12-21
+        end: 2027-01-01
+
+      - name: Winter break (vinterferie)
+        week: 7
+        start: 2027-02-15
+        end: 2027-02-19
+
+      - name: Easter (påskeferie)
+        start: 2027-03-22
+        end: 2027-03-29
+
+      - name: Ascension (Kristi himmelfartsdag)
+        start: 2027-05-06
+        end: 2027-05-07
+
+      - name: Whitsun (pinse)
+        start: 2027-05-15
+        end: 2027-05-17
+
+      - name: Summer (sommerferie)
+        start: 2027-06-28
+        end: 2027-08-06

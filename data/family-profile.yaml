@@ -1,0 +1,102 @@
+family:
+  primary_contact:
+    name: 'Peer [Lastname]'
+    email: null
+    phone: null
+
+  members:
+    - id: peer
+      name: 'Peer'
+      role: parent
+      date_of_birth: null
+      nationality: Danish
+      seat_preference: aisle
+      dietary: none
+      notes: 'Prefers direct flights. Window seat for kids.'
+
+    - id: spouse
+      name: null
+      role: parent
+      date_of_birth: null
+      nationality: Danish
+      seat_preference: window
+      dietary: none
+      notes: null
+
+    - id: child1
+      name: null
+      role: child
+      date_of_birth: null
+      nationality: Danish
+      age_at_travel: null  # calculated dynamically
+      seat_preference: null
+      dietary: none
+      notes: null
+
+    - id: child2
+      name: null
+      role: child
+      date_of_birth: null
+      nationality: Danish
+      age_at_travel: null  # calculated dynamically
+      seat_preference: null
+      dietary: none
+      notes: null
+
+    - id: child3
+      name: null
+      role: child
+      date_of_birth: null
+      nationality: Danish
+      age_at_travel: null  # calculated dynamically
+      seat_preference: null
+      dietary: none
+      notes: null
+
+    - id: child4
+      name: null
+      role: child
+      date_of_birth: null
+      nationality: Danish
+      age_at_travel: null  # calculated dynamically
+      seat_preference: null
+      dietary: none
+      notes: null
+
+  travel_preferences:
+    home_airport: CPH
+    preferred_airlines:
+      - SAS
+      - Norwegian
+      - Lufthansa
+    max_layovers: 1
+    max_layover_duration_hours: 3
+    accommodation_style: airbnb_preferred  # airbnb_preferred | hotel_preferred | either
+    accommodation_requirements:
+      - private_garden_or_terrace
+      - full_kitchen
+      - minimum_bedrooms: 4
+    car_rental:
+      required: true
+      minimum_seats: 7  # family of 6 + luggage
+      preferred_class: minivan_or_large_suv
+    budget_per_trip_eur:
+      low: 5000
+      typical: 8000
+      splurge: 15000
+    trip_types_enjoyed:
+      - beach
+      - city_with_culture
+      - nature
+    trip_types_avoided:
+      - ski
+    past_destinations_loved: []
+    past_destinations_avoid: []
+
+  loyalty_programs:
+    - program: 'SAS EuroBonus'
+      member_id: null
+      member: peer
+
+  school_calendar_country: Denmark
+  typical_trip_durations_days: [7, 10, 14]

@@ -1,0 +1,25 @@
+# Trip history — populated automatically after each trip
+#
+# Schema for each trip entry:
+#   - id: trip_001
+#     destination: 'Mallorca, Spain'
+#     dates:
+#       departure: 2026-07-01
+#       return: 2026-07-10
+#     members: [peer, spouse, child1, child2, child3, child4]
+#     flights:
+#       outbound: 'SAS SK1573 CPH-PMI'
+#       return: 'SAS SK1574 PMI-CPH'
+#     accommodation:
+#       type: airbnb
+#       name: 'Villa Son Vida'
+#       rating: 4.8
+#     car_rental:
+#       company: 'Europcar'
+#       vehicle: 'VW Touran'
+#     total_cost_eur: 7500
+#     rating: 4  # 1-5 family rating
+#     notes: 'Great beach, kids loved the pool. Restaurant X was excellent.'
+#     would_return: true
+
+trips: []
