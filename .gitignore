@@ -1,0 +1,10 @@
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Personal data (once populated with real info)
+# data/family-profile.yaml
+# data/document-vault.yaml

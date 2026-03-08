@@ -1,0 +1,30 @@
+{
+  "name": "family-travel-assistant",
+  "version": "1.0.0",
+  "description": "Personal travel concierge for the family. Plans trips, researches flights and accommodation, checks travel documents, and prepares bookings — all pre-loaded with family preferences and passport data.",
+  "skills": [
+    "skills/family-profile",
+    "skills/flight-research",
+    "skills/accommodation-research",
+    "skills/document-vault",
+    "skills/itinerary-builder",
+    "skills/booking-handoff"
+  ],
+  "commands": [
+    "commands/plan-trip.md",
+    "commands/check-documents.md",
+    "commands/research-destination.md",
+    "commands/find-flights.md",
+    "commands/find-accommodation.md",
+    "commands/build-itinerary.md",
+    "commands/prepare-booking.md",
+    "commands/trip-brief.md",
+    "commands/update-profile.md"
+  ],
+  "agents": [
+    "agents/flight-scout.md",
+    "agents/accommodation-scout.md",
+    "agents/destination-researcher.md",
+    "agents/document-checker.md"
+  ]
+}
