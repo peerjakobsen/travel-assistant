@@ -92,7 +92,7 @@ family-travel-assistant/
 |-----------|--------|
 | 1. Plugin Scaffold & Manifest | Done |
 | 2. Family Profile System | Done |
-| 3. Document Intelligence | Not started |
+| 3. Document Intelligence | Done |
 | 4. Destination Research Agent | Not started |
 | 5. Flight & Accommodation Research | Not started |
 | 6. Booking Handoff | Not started |
