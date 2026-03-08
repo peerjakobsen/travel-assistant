@@ -96,7 +96,7 @@ family-travel-assistant/
 | 4. Destination Research Agent | Done |
 | 5. Flight & Accommodation Research | Done |
 | 6. Booking Handoff | Done |
-| 7. Itinerary Builder & Trip Brief | Not started |
+| 7. Itinerary Builder & Trip Brief | Done |
 | 8. Scheduled Tasks & Proactive Alerts | Not started |
 | 9. Polish & Real-World Testing | Not started |
 
