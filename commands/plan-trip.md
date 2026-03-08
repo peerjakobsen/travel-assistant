@@ -17,12 +17,14 @@ Start planning a new trip from scratch. Takes a rough brief and orchestrates the
 4. **If destination is specified**: skip research, move directly to step 5
 5. Once destination is chosen, run these in sequence:
    a. Run `/travel:check-documents` for the chosen destination and travel date — report any passport/visa issues that need resolving
-   b. Note: flight and accommodation search commands are stubs until Milestone 5 — mention that these will be searched once those commands are implemented
+   b. Run `/travel:find-flights` for the destination and dates — present top 3 flight options
+   c. Run `/travel:find-accommodation` for the destination, dates, and recommended area from the research phase — present top 3 accommodation options
 6. Present a trip proposal summary:
    - Destination + dates
    - Document status (all clear or action items)
-   - Budget estimate from the research phase
-   - Next steps: "Once documents are sorted, I'll search for flights and accommodation" (pending Milestone 5)
+   - Top flight option + top accommodation option with combined total
+   - Comparison against the stated budget (under/on/over)
+   - Next steps: "Pick your preferred flight and accommodation, and I'll prepare the bookings with all details pre-filled."
 
 ## Output format
 A structured trip proposal with destination recommendation, flight options, accommodation options, document status, and estimated total budget.

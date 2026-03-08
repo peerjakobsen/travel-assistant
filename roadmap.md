@@ -94,7 +94,7 @@ family-travel-assistant/
 | 2. Family Profile System | Done |
 | 3. Document Intelligence | Done |
 | 4. Destination Research Agent | Done |
-| 5. Flight & Accommodation Research | Not started |
+| 5. Flight & Accommodation Research | Done |
 | 6. Booking Handoff | Not started |
 | 7. Itinerary Builder & Trip Brief | Not started |
 | 8. Scheduled Tasks & Proactive Alerts | Not started |
