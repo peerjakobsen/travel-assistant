@@ -59,6 +59,11 @@ Browse accommodation search sites and return structured options suitable for a f
 - Capture: vehicle type, daily rate, total cost, supplier
 - Include this in the output as a companion to the accommodation results
 
+**7. NEVER complete a booking**
+- If navigating to a property listing page, do not initiate any reservation or booking
+- Capture the booking URL for each option so the user can continue via `/travel:prepare-booking`
+- **STOP before any reservation form submission**
+
 ## Output schema
 Per accommodation option:
 - name, property_type

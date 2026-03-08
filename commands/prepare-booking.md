@@ -9,16 +9,45 @@ Navigate to a booking page, pre-fill all form fields from the family profile and
 - url (required): The booking URL to navigate to
 
 ## Instructions
-> **Stub — implemented in Milestone 6**
->
-> When implemented, this command will:
-> 1. Open the booking URL in the browser
-> 2. Read current form state
-> 3. Fill all passenger/guest fields from `data/document-vault.yaml`
-> 4. Select extras (seats, baggage) per `data/family-profile.yaml` preferences
-> 5. Navigate to the payment page
-> 6. **STOP** — do not enter payment details
-> 7. Present a clear summary of what's been filled
+
+1. Load `data/family-profile.yaml` for: family members (names, DOBs, seat preferences), loyalty programs (SAS EuroBonus member ID), contact details (email, phone), car rental preferences
+2. Load `data/document-vault.yaml` for: passport details per member (full legal name, document number, nationality, expiry date, issuing country)
+3. Open the provided booking URL in the browser via Chrome connector
+4. Read the current form state — identify what fields are present and what needs filling
+5. Fill form fields based on booking type:
+   - **Flight:** Enter all 6 passenger details (names as on passport, DOBs, nationalities, passport numbers), apply EuroBonus number to Peer's booking, select seat preferences (aisle for Peer, window for spouse and children), add 6x checked bags if not included
+   - **Accommodation:** Enter primary guest name (Peer), email, phone, number of guests (6), any special requests (parking, early check-in)
+   - **Car:** Enter driver details (Peer), select 7-seat vehicle, add second driver (spouse) if available, confirm pickup/return location
+6. Review all filled fields for accuracy — verify names match passport exactly, dates are correct, extras are applied
+7. Navigate forward through the booking flow toward the payment page
+8. **STOP at the payment page** — do not enter any payment information, do not click any pay/confirm button
+9. Capture: the current page URL, the total price shown, a breakdown of what's included
+10. Present the booking summary:
+
+```
+Booking Ready for Your Review
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**[Flight/Accommodation/Car] Booking**
+[Specific booking details — route, dates, property name, vehicle type]
+
+**Passengers/Guests:**
+[List each person with relevant filled details]
+
+**Extras:**
+[Seats selected, baggage, insurance, add-ons]
+
+**Loyalty:**
+[EuroBonus applied / not applicable]
+
+**Total: €[amount]**
+
+⏸  I've stopped at the payment page.
+   Review the details above, then enter your card details to complete.
+   URL: [current page URL]
+```
+
+11. If any fields could not be filled (unexpected form layout, missing data in profile), list them clearly so the user can fill them manually before paying
 
 ## Output format
 ```

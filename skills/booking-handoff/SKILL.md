@@ -5,22 +5,54 @@ description: How to prepare booking pages and hand off to the user. Critical saf
 
 # Booking Handoff Skill
 
-> **Stub — implemented in Milestone 6**
+## Safety Boundary (non-negotiable)
 
-This skill will encode:
-
-- **NEVER enter payment information** — stop at the payment page
+- **NEVER enter payment information** — credit card numbers, CVV, billing address
 - **NEVER submit a form that initiates a financial transaction**
-- Payment pages require manual user action — this is enforced by the Chrome extension's built-in prohibited actions, not just this plugin's instructions
-- Fill passenger details from `data/document-vault.yaml`: full names, DOB, passport numbers, nationalities, expiry dates
-- Fill loyalty program numbers where available
-- Select seat preferences from profile
-- Add baggage options as required
-- Pre-select travel insurance if applicable
-- Present a clear summary at the payment page and hand control to the user
+- **NEVER click "Pay", "Complete purchase", "Confirm and pay", or any equivalent button**
+- The user always clicks the final pay button themselves
+- This is enforced at two levels: plugin instructions AND Chrome extension platform safety
 
-### Chrome Session & Login State
+## Form-Filling Strategy by Booking Type
 
-- The Chrome connector shares the user's existing Chrome session. If the user is already logged into SAS.dk, Airbnb, Booking.com, or other travel sites, Claude uses that session automatically — loyalty numbers, saved payment methods, and member pricing are applied.
-- **CAPTCHAs** will pause execution and require the user to solve them manually in Chrome before the agent can continue.
-- **Payment pages** always require manual user action. The Chrome extension's built-in safety layer prevents submitting payment forms, independent of this plugin's own rules.
+### Flights
+
+- Load passenger details from `data/document-vault.yaml`: full legal names (as on passport), dates of birth, passport numbers, nationalities, expiry dates
+- Map each family member to a passenger slot (2 adults + children with correct ages at travel date)
+- Apply Peer's SAS EuroBonus number from `data/family-profile.yaml` loyalty_programs
+- Select seat preferences: aisle for Peer, window for spouse, window for children where possible
+- Request 6 checked bags (23kg each) if not included in fare
+- If SAS: select SAS Go or SAS Plus as previously recommended
+
+### Accommodation
+
+- Fill guest name (primary contact: Peer) and email/phone from `data/family-profile.yaml`
+- Enter number of guests: 6 (2 adults + 4 children)
+- Note any special requests: early check-in if arriving by morning flight, parking for 7-seat vehicle
+
+### Car Rental
+
+- Fill driver name (Peer) and details from document vault
+- Select 7-seat vehicle (minivan or large SUV)
+- Add additional driver (spouse) if option available
+- Note: pickup at destination airport, return same location
+
+## Handling Site-Specific Patterns
+
+- Login state is shared from user's Chrome session — loyalty pricing and saved details apply automatically
+- If a CAPTCHA appears, pause and notify the user to solve it manually in Chrome
+- If the site requires login, notify the user to log in first, then retry
+- If form fields don't match expected layout, fill what's possible and list unfilled fields in the summary
+
+## Summary Presentation
+
+- Always present a structured summary before handing off
+- Include: what was booked, who is on the booking, what extras were selected, total price, and the current page URL
+- Clearly state that the user must enter payment details and click pay
+
+## Chrome Session Notes
+
+- The Chrome connector shares the user's existing Chrome session (cookies, login state)
+- If logged into SAS.dk, Airbnb, Booking.com — loyalty pricing and saved methods apply automatically
+- CAPTCHAs pause execution and require manual user intervention
+- Payment form submission is blocked at the platform level by Chrome extension safety
